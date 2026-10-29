@@ -28,3 +28,16 @@ jobs:
 
       - name: Build Docker image
         run: docker build -t devx-demo:${{ github.sha }} .
+
+      - name: Export image for scanning
+        run: docker save devx-demo:${{ github.sha }} -o image.tar
+
+      - name: Scan image with Trivy
+        run: |
+          docker run --rm \
+            -v "$PWD:/scan:ro" \
+            aquasec/trivy:0.76.0 image \
+            --input /scan/image.tar \
+            --scanners vuln \
+            --severity HIGH,CRITICAL \
+            --exit-code 1
