@@ -18,7 +18,7 @@ spec:
         runAsUser: 10001
       containers:
         - name: app
-          image: devx-demo:v1
+          image: devx-demo:v2
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
